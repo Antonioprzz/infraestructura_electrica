@@ -1,5 +1,7 @@
 package model;
 
+import model.Contador;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -25,7 +27,15 @@ public class LecturaConsumo {
     @JoinColumn(name = "contador_id", nullable = false)
     private Contador contador;
 
+    // Enum
+
+    public enum OrigenLectura {
+        AUTOMATICO,
+        MANUAL
+    }
+
     // Constructores
+
     public LecturaConsumo() {}
 
     public LecturaConsumo(LocalDateTime fechaHora, double valorKWh,
@@ -37,6 +47,7 @@ public class LecturaConsumo {
     }
 
     // Getters y Setters
+
     public Long getId() { return id; }
 
     public LocalDateTime getFechaHora() { return fechaHora; }

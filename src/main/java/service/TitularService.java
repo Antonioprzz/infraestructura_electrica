@@ -11,11 +11,27 @@ public class TitularService {
 
     private final TitularDAO dao = new TitularDAO();
 
+    // ── Validación de DNI/NIF español ────────────────────────────────────────
+    // Formato: 8 dígitos + 1 letra (cualquiera)
+    private static void validarNif(String nif) {
+        if (nif == null || nif.isBlank())
+            throw new ValidationException("El NIF es obligatorio.");
+
+        String n = nif.trim().toUpperCase();
+
+        // Formato: exactamente 8 dígitos seguidos de cualquier letra
+        if (!n.matches("\\d{8}[A-Z]"))
+            throw new ValidationException(
+                    "El NIF '" + nif.trim() + "' no tiene un formato válido. " +
+                            "Debe contener 8 dígitos seguidos de una letra (ej: 12345678Z).");
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
     public Titular registrar(String nombreCompleto, String nif, String direccion, String email) {
         if (nombreCompleto == null || nombreCompleto.isBlank())
             throw new ValidationException("El nombre completo o razón social es obligatorio.");
-        if (nif == null || nif.isBlank())
-            throw new ValidationException("El NIF es obligatorio.");
+
+        validarNif(nif);
 
         // RS-004
         if (dao.existeConNif(nif.trim()))
@@ -41,8 +57,8 @@ public class TitularService {
 
         if (nombreCompleto == null || nombreCompleto.isBlank())
             throw new ValidationException("El nombre es obligatorio.");
-        if (nif == null || nif.isBlank())
-            throw new ValidationException("El NIF es obligatorio.");
+
+        validarNif(nif);
 
         // RS-004: unicidad, sólo si cambió
         if (!t.getNif().equalsIgnoreCase(nif.trim()) && dao.existeConNif(nif.trim()))
