@@ -7,10 +7,28 @@ import util.ValidationException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Clase de servicio para las subestaciones.
+ * Hace de "intermediario" entre el menú principal y la DAO:
+ * comprueba que los datos sean válidos antes de mandarlos a la BBDD
+ * y lanza {@link ValidationException} si algo no cuadra.
+ */
 public class SubestacionService {
 
+    /** DAO que se usa para acceder a la BBDD de subestaciones. */
     private final SubestacionDAO dao = new SubestacionDAO();
 
+    /**
+     * Registra una subestación nueva, validando los datos.
+     *
+     * @param nombre nombre de la subestación (obligatorio y único).
+     * @param provincia provincia (obligatoria).
+     * @param latitud latitud.
+     * @param longitud longitud.
+     * @param capacidadMaximaMW capacidad máxima en MW (debe ser mayor que 0).
+     * @return la subestación ya registrada.
+     * @throws ValidationException si algún dato no es válido o el nombre se repite.
+     */
     public Subestacion registrar(String nombre, String provincia, double latitud,
                                  double longitud, double capacidadMaximaMW) {
         // RS-001: campos obligatorios
@@ -33,20 +51,50 @@ public class SubestacionService {
         return dao.guardar(s);
     }
 
+    /**
+     * Busca una subestación por id.
+     *
+     * @param id el id de la subestación.
+     * @return Optional con la subestación si existe, vacío si no.
+     */
     public Optional<Subestacion> buscarPorId(Long id) {
         return dao.buscarPorId(id);
     }
 
+    /**
+     * Devuelve todas las subestaciones registradas.
+     *
+     * @return lista con todas las subestaciones.
+     */
     public List<Subestacion> listarTodas() {
         return dao.listarTodas();
     }
 
+    /**
+     * Devuelve las subestaciones conectadas a la dada.
+     *
+     * @param subestacionId id de la subestación.
+     * @return lista con las subestaciones conectadas.
+     * @throws ValidationException si la subestación no existe.
+     */
     public List<Subestacion> listarConectadas(Long subestacionId) {
         if (!dao.buscarPorId(subestacionId).isPresent())
             throw new ValidationException("No existe ninguna subestación con ID " + subestacionId + ".");
         return dao.listarConectadas(subestacionId);
     }
 
+    /**
+     * Actualiza los datos de una subestación.
+     *
+     * @param id id de la subestación a actualizar.
+     * @param nombre nombre nuevo.
+     * @param provincia provincia nueva.
+     * @param latitud latitud nueva.
+     * @param longitud longitud nueva.
+     * @param capacidadMaximaMW capacidad nueva (debe ser mayor que 0).
+     * @return la subestación ya actualizada.
+     * @throws ValidationException si los datos no son válidos o no existe.
+     */
     public Subestacion actualizar(Long id, String nombre, String provincia,
                                   double latitud, double longitud, double capacidadMaximaMW) {
         Subestacion s = dao.buscarPorId(id)
@@ -71,6 +119,13 @@ public class SubestacionService {
         return dao.actualizar(s);
     }
 
+    /**
+     * Borra una subestación por id.
+     *
+     * @param id id de la subestación.
+     * @return true si se borra correctamente.
+     * @throws ValidationException si no existe.
+     */
     public boolean eliminar(Long id) {
         if (!dao.buscarPorId(id).isPresent())
             throw new ValidationException("No existe ninguna subestación con ID " + id + ".");

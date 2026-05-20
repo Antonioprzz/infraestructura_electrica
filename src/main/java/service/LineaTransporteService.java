@@ -9,11 +9,31 @@ import util.ValidationException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Clase de servicio para las líneas de transporte.
+ * Valida los datos antes de pasarlos a la DAO y comprueba que las
+ * subestaciones de origen y destino existan y no sean la misma.
+ */
 public class LineaTransporteService {
 
+    /** DAO para acceder a las líneas en la BBDD. */
     private final LineaTransporteDAO dao = new LineaTransporteDAO();
+    /** DAO para comprobar las subestaciones origen/destino. */
     private final SubestacionDAO subDAO = new SubestacionDAO();
 
+    /**
+     * Registra una línea nueva, validando los datos.
+     *
+     * @param codigo código identificativo (obligatorio y único).
+     * @param longitudKm longitud en km (debe ser mayor que 0).
+     * @param voltajeKV voltaje en kV.
+     * @param anioInstalacion año de instalación.
+     * @param tramo tramo o ruta (obligatorio).
+     * @param idOrigen id de la subestación de origen.
+     * @param idDestino id de la subestación de destino.
+     * @return la línea ya registrada.
+     * @throws ValidationException si algún dato no es válido.
+     */
     public LineaTransporte registrar(String codigo, double longitudKm, double voltajeKV,
                                      int anioInstalacion, String tramo,
                                      Long idOrigen, Long idDestino) {
@@ -40,14 +60,39 @@ public class LineaTransporteService {
         return dao.guardar(linea);
     }
 
+    /**
+     * Busca una línea por id.
+     *
+     * @param id id de la línea.
+     * @return Optional con la línea si existe, vacío si no.
+     */
     public Optional<LineaTransporte> buscarPorId(Long id) {
         return dao.buscarPorId(id);
     }
 
+    /**
+     * Devuelve todas las líneas registradas.
+     *
+     * @return lista con todas las líneas.
+     */
     public List<LineaTransporte> listarTodas() {
         return dao.listarTodas();
     }
 
+    /**
+     * Actualiza los datos de una línea.
+     *
+     * @param id id de la línea a actualizar.
+     * @param codigo código (no se puede repetir si cambia).
+     * @param longitudKm longitud en km (debe ser mayor que 0).
+     * @param voltajeKV voltaje en kV.
+     * @param anioInstalacion año de instalación.
+     * @param tramo tramo o ruta.
+     * @param idOrigen id de la subestación de origen.
+     * @param idDestino id de la subestación de destino.
+     * @return la línea actualizada.
+     * @throws ValidationException si los datos no son válidos.
+     */
     public LineaTransporte actualizar(Long id, String codigo, double longitudKm, double voltajeKV,
                                       int anioInstalacion, String tramo,
                                       Long idOrigen, Long idDestino) {
@@ -76,6 +121,13 @@ public class LineaTransporteService {
         return dao.actualizar(l);
     }
 
+    /**
+     * Borra una línea por id.
+     *
+     * @param id id de la línea a borrar.
+     * @return true si se borra correctamente.
+     * @throws ValidationException si no existe.
+     */
     public boolean eliminar(Long id) {
         if (!dao.buscarPorId(id).isPresent())
             throw new ValidationException("No existe ninguna línea con ID " + id + ".");

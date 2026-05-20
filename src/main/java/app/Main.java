@@ -23,19 +23,45 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase principal del programa.
+ * Muestra un menú por consola para gestionar la red eléctrica:
+ * subestaciones, líneas de transporte, titulares, contratos de
+ * suministro, contadores y lecturas de consumo. Usa los servicios
+ * para validar datos y guardar/leer información en la BBDD.
+ *
+ * @author Antonio Pérez Díaz, Daniel Del Toro, Antonio Beltrán, Juan María Alanis y Sergio Ojeda
+ * @version 1.0
+ */
 public class Main {
 
+    /** Scanner para leer datos por teclado. */
     static Scanner sc = new Scanner(System.in);
+    /** Formato para introducir fechas (día/mes/año). */
     static DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    /** Formato para introducir fechas con hora (día/mes/año hora:minuto). */
     static DateTimeFormatter formatoFechaHora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+    /** Servicio para gestionar las subestaciones. */
     static SubestacionService svcSubestacion = new SubestacionService();
+    /** Servicio para gestionar las líneas de transporte. */
     static LineaTransporteService svcLinea = new LineaTransporteService();
+    /** Servicio para gestionar los titulares. */
     static TitularService svcTitular = new TitularService();
+    /** Servicio para gestionar los contratos de suministro. */
     static ContratoSuministroService svcContrato = new ContratoSuministroService();
+    /** Servicio para gestionar los contadores. */
     static ContadorService svcContador = new ContadorService();
+    /** Servicio para gestionar las lecturas de consumo. */
     static LecturaConsumoService svcLectura = new LecturaConsumoService();
 
+    /**
+     * Punto de entrada del programa. Inicia la BBDD, muestra el menú
+     * principal en bucle hasta que el usuario elige salir, y al final
+     * cierra la conexión.
+     *
+     * @param args argumentos de línea de comandos (no se usan).
+     */
     public static void main(String[] args) {
         System.out.println("+==============================================+");
         System.out.println("|     GESTION DE RED ELECTRICA  - ObjectDB    |");
@@ -91,6 +117,7 @@ public class Main {
     // SUBESTACIONES
     // -------------------------------------------------------
 
+    /** Muestra el submenú de gestión de subestaciones y llama a la opción que elija el usuario. */
     static void menuSubestaciones() {
         int opcion;
         do {
@@ -126,6 +153,7 @@ public class Main {
         } while (opcion != 0);
     }
 
+    /** Pide al usuario los datos de una subestación nueva y la registra. */
     static void registrarSubestacion() {
         System.out.println("\n--- Nueva subestacion ---");
         try {
@@ -149,6 +177,7 @@ public class Main {
         }
     }
 
+    /** Consulta una subestación por id y muestra sus datos. */
     static void consultarSubestacionPorId() {
         System.out.println("\n--- Consultar subestacion ---");
         System.out.print("  ID de la subestacion: ");
@@ -161,6 +190,7 @@ public class Main {
         }
     }
 
+    /** Muestra por pantalla la lista de todas las subestaciones. */
     static void listarSubestaciones() {
         System.out.println("\n--- Listado de subestaciones ---");
         List<Subestacion> lista = svcSubestacion.listarTodas();
@@ -173,6 +203,7 @@ public class Main {
         }
     }
 
+    /** Pide los datos nuevos de una subestación y la actualiza. */
     static void actualizarSubestacion() {
         System.out.println("\n--- Actualizar subestacion ---");
         System.out.print("  ID de la subestacion a actualizar: ");
@@ -214,6 +245,7 @@ public class Main {
         }
     }
 
+    /** Borra una subestación pidiendo su id por teclado. */
     static void eliminarSubestacion() {
         System.out.println("\n--- Eliminar subestacion ---");
         System.out.print("  ID de la subestacion a eliminar: ");
@@ -230,6 +262,7 @@ public class Main {
         }
     }
 
+    /** Muestra las subestaciones conectadas a una dada (por líneas de transporte). */
     static void verSubestacionesConectadas() {
         System.out.println("\n--- Subestaciones conectadas ---");
         System.out.print("  ID de la subestacion: ");
@@ -253,6 +286,7 @@ public class Main {
     // LINEAS DE TRANSPORTE
     // -------------------------------------------------------
 
+    /** Submenú de gestión de líneas de transporte. */
     static void menuLineas() {
         int opcion;
         do {
@@ -285,6 +319,7 @@ public class Main {
         } while (opcion != 0);
     }
 
+    /** Pide los datos para registrar una línea de transporte nueva. */
     static void registrarLinea() {
         System.out.println("\n--- Nueva linea de transporte ---");
         try {
@@ -312,6 +347,7 @@ public class Main {
         }
     }
 
+    /** Consulta una línea por id y muestra sus datos. */
     static void consultarLineaPorId() {
         System.out.println("\n--- Consultar linea ---");
         System.out.print("  ID de la linea: ");
@@ -324,6 +360,7 @@ public class Main {
         }
     }
 
+    /** Muestra la lista de todas las líneas de transporte. */
     static void listarLineas() {
         System.out.println("\n--- Listado de lineas de transporte ---");
         List<LineaTransporte> lista = svcLinea.listarTodas();
@@ -336,6 +373,7 @@ public class Main {
         }
     }
 
+    /** Pide datos nuevos para actualizar una línea existente. */
     static void actualizarLinea() {
         System.out.println("\n--- Actualizar linea de transporte ---");
         System.out.print("  ID de la linea a actualizar: ");
@@ -385,6 +423,7 @@ public class Main {
         }
     }
 
+    /** Borra una línea pidiendo el id por teclado. */
     static void eliminarLinea() {
         System.out.println("\n--- Eliminar linea ---");
         System.out.print("  ID de la linea a eliminar: ");

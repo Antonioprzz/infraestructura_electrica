@@ -8,8 +8,19 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Clase DAO para las líneas de transporte.
+ * Permite guardar, buscar, listar, actualizar y borrar líneas de
+ * transporte en la BBDD usando JPA.
+ */
 public class LineaTransporteDAO {
 
+    /**
+     * Guarda una línea nueva en la BBDD.
+     *
+     * @param linea la línea a guardar.
+     * @return la línea guardada (ya con id).
+     */
     public LineaTransporte guardar(LineaTransporte linea) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -26,6 +37,12 @@ public class LineaTransporteDAO {
         }
     }
 
+    /**
+     * Busca una línea por su id.
+     *
+     * @param id el id de la línea.
+     * @return un Optional con la línea si existe, vacío si no.
+     */
     public Optional<LineaTransporte> buscarPorId(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -35,6 +52,11 @@ public class LineaTransporteDAO {
         }
     }
 
+    /**
+     * Devuelve todas las líneas, ordenadas por código.
+     *
+     * @return lista con todas las líneas (puede estar vacía).
+     */
     public List<LineaTransporte> listarTodas() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -46,6 +68,12 @@ public class LineaTransporteDAO {
         }
     }
 
+    /**
+     * Comprueba si ya existe una línea con ese código.
+     *
+     * @param codigo el código a comprobar.
+     * @return true si ya existe, false si no.
+     */
     public boolean existeConCodigo(String codigo) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -59,6 +87,12 @@ public class LineaTransporteDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de una línea existente.
+     *
+     * @param linea la línea con los datos nuevos.
+     * @return la línea actualizada.
+     */
     public LineaTransporte actualizar(LineaTransporte linea) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -75,6 +109,12 @@ public class LineaTransporteDAO {
         }
     }
 
+    /**
+     * Borra la línea cuyo id se le pasa.
+     *
+     * @param id el id de la línea a borrar.
+     * @return true si se borró, false si no se encontró.
+     */
     public boolean eliminar(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();

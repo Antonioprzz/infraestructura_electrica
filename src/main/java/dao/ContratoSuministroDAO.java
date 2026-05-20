@@ -8,8 +8,19 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Clase DAO para los contratos de suministro.
+ * Tiene los métodos para guardar, buscar, listar, actualizar y borrar
+ * contratos en la base de datos usando JPA.
+ */
 public class ContratoSuministroDAO {
 
+    /**
+     * Guarda un contrato nuevo en la BBDD.
+     *
+     * @param contrato el contrato que queremos guardar.
+     * @return el contrato ya guardado (ya con id asignado).
+     */
     public ContratoSuministro guardar(ContratoSuministro contrato) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -26,6 +37,12 @@ public class ContratoSuministroDAO {
         }
     }
 
+    /**
+     * Busca un contrato por su id.
+     *
+     * @param id el id del contrato.
+     * @return un Optional con el contrato si existe, o vacío si no.
+     */
     public Optional<ContratoSuministro> buscarPorId(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -34,7 +51,14 @@ public class ContratoSuministroDAO {
             em.close();
         }
     }
-    
+
+    /**
+     * Devuelve todos los contratos que tiene un titular,
+     * ordenados por fecha de alta.
+     *
+     * @param titularId el id del titular.
+     * @return lista con sus contratos (puede estar vacía).
+     */
     public List<ContratoSuministro> listarPorTitular(Long titularId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -48,6 +72,13 @@ public class ContratoSuministroDAO {
         }
     }
 
+    /**
+     * Comprueba si ya hay un contrato con ese código.
+     * Sirve para no repetir códigos al dar de alta un contrato.
+     *
+     * @param codigo el código a comprobar.
+     * @return true si ya existe, false si no.
+     */
     public boolean existeConCodigo(String codigo) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -61,6 +92,12 @@ public class ContratoSuministroDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de un contrato que ya existe.
+     *
+     * @param contrato el contrato con los datos nuevos.
+     * @return el contrato actualizado.
+     */
     public ContratoSuministro actualizar(ContratoSuministro contrato) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -77,6 +114,12 @@ public class ContratoSuministroDAO {
         }
     }
 
+    /**
+     * Borra el contrato cuyo id se le pasa.
+     *
+     * @param id el id del contrato a borrar.
+     * @return true si se borró, false si no se encontró.
+     */
     public boolean eliminar(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();

@@ -8,8 +8,18 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Clase DAO para los titulares.
+ * Permite guardar, buscar, listar, actualizar y borrar titulares en la BBDD.
+ */
 public class TitularDAO {
 
+    /**
+     * Guarda un titular nuevo en la BBDD.
+     *
+     * @param titular el titular a guardar.
+     * @return el titular guardado (con id ya asignado).
+     */
     public Titular guardar(Titular titular) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -26,6 +36,12 @@ public class TitularDAO {
         }
     }
 
+    /**
+     * Busca un titular por su id.
+     *
+     * @param id el id del titular.
+     * @return un Optional con el titular si existe, vacío si no.
+     */
     public Optional<Titular> buscarPorId(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -35,6 +51,11 @@ public class TitularDAO {
         }
     }
 
+    /**
+     * Devuelve todos los titulares ordenados por nombre.
+     *
+     * @return lista con todos los titulares.
+     */
     public List<Titular> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -46,6 +67,12 @@ public class TitularDAO {
         }
     }
 
+    /**
+     * Comprueba si ya existe un titular con ese NIF.
+     *
+     * @param nif el NIF a comprobar.
+     * @return true si existe, false si no.
+     */
     public boolean existeConNif(String nif) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -59,6 +86,12 @@ public class TitularDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de un titular existente.
+     *
+     * @param titular el titular con los datos nuevos.
+     * @return el titular actualizado.
+     */
     public Titular actualizar(Titular titular) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -75,6 +108,12 @@ public class TitularDAO {
         }
     }
 
+    /**
+     * Borra el titular cuyo id se le pasa.
+     *
+     * @param id el id del titular a borrar.
+     * @return true si se borró, false si no se encontró.
+     */
     public boolean eliminar(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();

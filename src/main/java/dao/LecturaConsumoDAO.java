@@ -8,8 +8,19 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Clase DAO para las lecturas de consumo.
+ * Permite guardar, buscar, listar, actualizar y borrar lecturas
+ * en la base de datos a través de JPA.
+ */
 public class LecturaConsumoDAO {
 
+    /**
+     * Guarda una lectura nueva en la BBDD.
+     *
+     * @param lectura la lectura a guardar.
+     * @return la lectura guardada (con id ya asignado).
+     */
     public LecturaConsumo guardar(LecturaConsumo lectura) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -26,6 +37,12 @@ public class LecturaConsumoDAO {
         }
     }
 
+    /**
+     * Busca una lectura por su id.
+     *
+     * @param id el id de la lectura.
+     * @return un Optional con la lectura si existe, o vacío si no.
+     */
     public Optional<LecturaConsumo> buscarPorId(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -35,6 +52,12 @@ public class LecturaConsumoDAO {
         }
     }
 
+    /**
+     * Devuelve todas las lecturas de un contador, de la más nueva a la más vieja.
+     *
+     * @param contadorId el id del contador.
+     * @return lista de lecturas (puede estar vacía).
+     */
     public List<LecturaConsumo> listarPorContador(Long contadorId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -48,6 +71,12 @@ public class LecturaConsumoDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de una lectura existente.
+     *
+     * @param lectura la lectura con los nuevos datos.
+     * @return la lectura ya actualizada.
+     */
     public LecturaConsumo actualizar(LecturaConsumo lectura) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -64,6 +93,12 @@ public class LecturaConsumoDAO {
         }
     }
 
+    /**
+     * Borra la lectura cuyo id se le pasa.
+     *
+     * @param id el id de la lectura a borrar.
+     * @return true si se borró, false si no se encontró.
+     */
     public boolean eliminar(Long id) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
